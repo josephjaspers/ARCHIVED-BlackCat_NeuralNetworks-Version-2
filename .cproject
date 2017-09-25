@@ -128,7 +128,6 @@
 								<option id="nvcc.linker.option.libs.790658639" name="Libraries (-l)" superClass="nvcc.linker.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="f77blas"/>
 									<listOptionValue builtIn="false" value="cblas"/>
-									<listOptionValue builtIn="false" value="atlas"/>
 									<listOptionValue builtIn="false" value="BlackCat_Tensors"/>
 								</option>
 								<option id="nvcc.linker.option.paths.215608714" name="Library search path (-L)" superClass="nvcc.linker.option.paths" valueType="libPaths">

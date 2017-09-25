@@ -55,9 +55,6 @@ public:
 	 void train(const std::vector<vec>& inputs, const std::vector<vec>& outputs) {
 
 		 for (int i = 0; i < inputs.size(); ++i) {
-			 if (i % 1000 ==0)
-				 std::cout << i << std::endl;
-
 			 vec hyp = forwardPropagation(inputs[i]);
 			 backwardPropagation(hyp - outputs[i]);
 			 update();
@@ -103,11 +100,6 @@ public:
 			 vec residual = hyp - outputs[i];
 			 error += abs(residual);
 
-			 if (i < 10) {
-				 std::cout<< "TESTDATA -----------------------------------------"  << i << std::endl;
-				 std::cout << " HYP "; hyp.print(); std::cout << std::endl;
-				 std::cout << " EXP "; outputs[i].print(); std::cout << std::endl;
-			 }
 			 if (maxId(hyp) == maxId(outputs[i])) {
 				 percentcorrect += 1;
 			 }

@@ -19,7 +19,7 @@ public:
 	nonLinearityFunction g;			//sigmoid
 	nonLinearityFunction h;			//hyperbolic tangent
 
-	scalar lr = scalar(.01);			//learning rate
+	scalar lr = scalar(.03);			//learning rate
 
 	Layer* next = nullptr;			//next layer in NN
 	Layer* prev = nullptr;			//prev layer in NN
