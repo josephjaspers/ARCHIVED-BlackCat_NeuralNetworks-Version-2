@@ -3,7 +3,7 @@
 #define  BLACKCAT_neuralnet_h
 
 #include "Layer.h"
-
+#include <cstdlib>
 class NeuralNetwork : public Layer {
 
 	Layer* last = nullptr;
@@ -60,6 +60,57 @@ public:
 			 update();
 		 }
 
+	 }
+
+	 void realTimeTrain(const std::vector<vec>& inputs, const std::vector<vec>& outputs, unsigned epochs, unsigned printCount) {
+
+		 unsigned numb_corect = 0;
+		 unsigned numb_incorrect = 0;
+		 float percentCorrect = 0;
+		 float percentIncorrect = 0;
+
+		 float total_pc;
+		 float total_ic;
+		 unsigned iter = 0;
+		 while(iter < epochs) {
+		 for (int i = 0; i < inputs.size(); ++i) {
+
+			 vec hyp = forwardPropagation(inputs[i]);
+			 vec residual = hyp - outputs[i];
+
+			 double error = sum(abs(residual));
+
+			 if (maxId(hyp) == maxId(outputs[i])) {
+				 numb_corect++;
+				 percentCorrect += 1;
+				 total_pc += 1;
+			 } else {
+				 numb_incorrect++;
+				 percentIncorrect += 1;
+				 total_ic += 1;
+			 }
+			 //system("CLS");
+			 //std::system("clear");
+			 if (i% printCount == 0) {
+
+			 std::cout << std::string(49, '\n');
+			 std::cout << "Current epoch = " << iter << std::endl;
+			 std::cout << "Current data  = " << i << std::endl;
+			 std::cout << "Current error = " << error << std::endl;
+			 std::cout << "Number of Correct = " << numb_corect << std::endl;
+			 std::cout << "Number incorrect  = " << numb_incorrect << std::endl;
+			 std::cout << "Percent correct  (of last " << printCount << ") = " << percentCorrect << "/" << percentIncorrect << " = " << percentCorrect/(percentIncorrect + percentCorrect) << std::endl;
+			 std::cout << "Percent correct = " << total_pc << "/" << total_ic << " = " << total_pc/(total_ic + total_pc) << std::endl;
+
+			 percentCorrect = 0;
+			 percentIncorrect = 0;
+			 }
+
+			 backwardPropagation(residual);
+			 update();
+		 }
+		 ++iter;
+		 }
 	 }
 	 vec abs(vec v) {
 		 for (unsigned i = 0; i < v.size(); ++i) {

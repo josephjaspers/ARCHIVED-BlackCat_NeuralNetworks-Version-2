@@ -256,7 +256,7 @@ std::cout << " gen network " << std::endl;
 	vec output;
 std::cout << " training " << std::endl;
 
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i < 1000; ++i) {
 		ff_train(net, d1, o1);
 		ff_train(net, d2, o2);
 		ff_train(net, d3, o3);

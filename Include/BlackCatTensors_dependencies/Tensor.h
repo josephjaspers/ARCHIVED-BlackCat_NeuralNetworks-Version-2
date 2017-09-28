@@ -154,7 +154,7 @@ public:
 	Tensor<number_type, TensorOperations> operator*  (const Tensor<number_type, TensorOperations>& t) const;
 	Scalar<number_type, TensorOperations> corr(const Tensor<number_type, TensorOperations>& t) const;
 	Tensor<number_type, TensorOperations> x_corr(unsigned move_dimensions, const Tensor<number_type, TensorOperations>& t) const;
-	Tensor<number_type, TensorOperations> x_corr_error(unsigned move_dimensions, const Tensor<number_type, TensorOperations>& t) const; //accepts the error of the output and returns the error of the filter
+	Tensor<number_type, TensorOperations> x_corr_FilterError(unsigned move_dimensions, const Tensor<number_type, TensorOperations>& t) const; //accepts the error of the output and returns the error of the filter
 
 	Tensor<number_type, TensorOperations> x_corr_full(unsigned move_dimensions, const Tensor<number_type, TensorOperations>& t) const;
 	Tensor<number_type, TensorOperations> x_corr_stack(unsigned move_dimensions, const Tensor<number_type, TensorOperations>& t) const;

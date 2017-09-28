@@ -5,14 +5,17 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../BC_NN_tests/MNIST_test.cpp \
+../BC_NN_tests/SnakeGame.cpp \
 ../BC_NN_tests/deprecated\ Tests.cpp 
 
 OBJS += \
 ./BC_NN_tests/MNIST_test.o \
+./BC_NN_tests/SnakeGame.o \
 ./BC_NN_tests/deprecated\ Tests.o 
 
 CPP_DEPS += \
 ./BC_NN_tests/MNIST_test.d \
+./BC_NN_tests/SnakeGame.d \
 ./BC_NN_tests/deprecated\ Tests.d 
 
 

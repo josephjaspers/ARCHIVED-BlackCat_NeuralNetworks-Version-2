@@ -96,27 +96,25 @@ return next ?
 
 	}
 	virtual vec backwardPropagation(vec error) {
-		//Shape the error to apropriate dimensions
 		tensor dy = error;
 		dy.reshape( { out_r, out_c, numb_krnls });
-		//get the last inputs
 		tensor x(bpX.poll_last());
-		//get bias gradient
+
 		b_gradientStorage -= dy;
-
-
 		for (unsigned i = 0; i < numb_krnls; ++i)
-		w_gradientStorage[i] -= x.x_corr_error(2, dy[i]);
+		w_gradientStorage[i] -= x.x_corr_FilterError(2, dy[i]);
+
 
 		if (prev) {
-			//calculates the delta -- reshape enables a single correlation call opposed to multiple for loops
-			w.reshape({krnl_r, krnl_c, numb_krnls, img_d});
-			dx = w.x_corr_full_stack(2, dy);
-			w.reshape({krnl_r, krnl_c, img_d, numb_krnls});
+			dx = 0; //clear the delta_X tensor
 
+			//sum the error
+				for (unsigned i = 0; i < numb_krnls; ++i) {
+					dx += w[i].x_corr_SignalError(2, dy[i]);
+				}
 
+				//send it off into the world
 			return prev->backwardPropagation(vec(dx));
-
 		} else {
 			return error;
 		}
@@ -135,7 +133,6 @@ return next ?
 	}
 	virtual void updateGradients() {
 		w += w_gradientStorage & lr;
-
 		b += b_gradientStorage & lr; // / (output_rows * output_cols * n_filters);
 	}
 };
@@ -144,6 +141,8 @@ return next ?
 
 
 //depreacted code
+
+//	-- This is the (non optimized) krnl for calculating the deltas/gradients of the current weights
 //		unsigned e_id = 0;
 //		for (unsigned f = 0; f < numb_krnls; ++f) {			//for each filter
 //			for (unsigned r = 0; r < r_pos; ++r) {	//multiply the subtensor by the value
@@ -154,4 +153,13 @@ return next ?
 //				}
 //			}
 //		}
-
+//	-- non optimized code for calculating the gradients of dx (the error of the inputs)
+//for (unsigned f = 0; f < numb_krnls; ++f) {
+//	for (unsigned r = 0; r < r_pos; ++r) {
+//		for (unsigned c = 0; c < c_pos; ++c) {
+//			dx({0, r, c}, {krnl_r, krnl_c, img_d}) -= w[f] & dy(e_id);
+//			++e_id;
+//			e_id = e_id % dy.size();
+//		}
+//	}
+//}
