@@ -59,7 +59,6 @@ public:
 		std::cout << "Head: " << snake_head.second << " " << snake_head.first << std::endl;
 		std::cout << "Fruit: " << fruit_position.second << " " << fruit_position.first << std::endl;
 
-		p(snake_head.first * board_rows + snake_head.second) = HEAD;
 
 		for (auto i = snake_body.begin(); i != snake_body.end(); ++i) {
 			p((*i).first * board_rows + (*i).second) = BODY;
@@ -77,11 +76,11 @@ public:
 		for (int i = 0; i < board_rows; ++i){
 		std::cout << "#";
 			for (int  j = 0; j < board_cols; ++j) {
-				if (p[i](j) == FRUIT) {
+				if (p[i](j)() == FRUIT) {
 					std::cout << "F";
-				} else if (p[i](j) == HEAD) {
+				} else if (p[i](j)() == HEAD) {
 					std::cout << "O";
-				} else if (p[i](j) == BODY) {
+				} else if (p[i](j)() == BODY) {
 					std::cout << "o";
 				} else {
 					std::cout << " ";

@@ -3,7 +3,7 @@
 
 #include "Layer.h"
 
-class ConvolutionalLayer: public Layer {
+class ConvolutionalLayer : public Layer {
 public:
 	unsigned img_r;			//numb rows of input signal
 	unsigned img_c;			//numb cols of input signal
@@ -56,18 +56,17 @@ public:
 		w.randomize(-1, 2);
 		b.randomize(-1, 2);
 
-
 		y = tensor(out_r, out_c, numb_krnls);
 		dx = tensor(img_r, img_c, img_d);
 
 	}
 	tensor relu(tensor t) {
 		for (unsigned i = 0; i < t.size(); ++i) {
-			if (t(i) > 1) {
-				t(i) = 1;
+			if (t(i)() > 1) {
+				t(i)() = 1;
 			} else {
-				if (t(i) < 0) {
-					t(i) = 0;
+				if (t(i)() < 0) {
+					t(i)() = 0;
 				}
 			}
 		}
@@ -80,9 +79,7 @@ public:
 		y = relu(w.x_corr_stack(2, x) + b);
 
 		bpX.store(std::move(x));
-		return next ?
-				next->forwardPropagation(vec(std::move(y))) :
-				std::move(vec(std::move(y)));
+		return next ? next->forwardPropagation(vec(std::move(y))) : std::move(vec(std::move(y)));
 
 	}
 	virtual vec forwardPropagation_express(vec data) {
@@ -90,9 +87,7 @@ public:
 		tensor x = data;
 		x.reshape( { img_r, img_c, img_d });
 		y = relu(w.x_corr_stack(2, x) + b);
-return next ?
-		next->forwardPropagation_express(vec(std::move(y))) :
-		std::move(vec(std::move(y)));
+		return next ? next->forwardPropagation_express(vec(std::move(y))) : std::move(vec(std::move(y)));
 
 	}
 	virtual vec backwardPropagation(vec error) {
@@ -102,18 +97,16 @@ return next ?
 
 		b_gradientStorage -= dy;
 		for (unsigned i = 0; i < numb_krnls; ++i)
-		w_gradientStorage[i] -= x.x_corr_FilterError(2, dy[i]);
-
+			w_gradientStorage[i] -= x.x_corr_FilterError(2, dy[i]);
 
 		if (prev) {
-			dx = 0; //clear the delta_X tensor
-
+			dx.zeros();
 			//sum the error
-				for (unsigned i = 0; i < numb_krnls; ++i) {
-					dx += w[i].x_corr_SignalError(2, dy[i]);
-				}
+			for (unsigned i = 0; i < numb_krnls; ++i) {
+				dx += w[i].x_corr_SignalError(2, dy[i]);
+			}
 
-				//send it off into the world
+			//send it off into the world
 			return prev->backwardPropagation(vec(dx));
 		} else {
 			return error;
@@ -128,8 +121,8 @@ return next ?
 		bpX.clear();
 	}
 	virtual void clearGradientStorage() {
-		w_gradientStorage = 0;
-		b_gradientStorage = 0;
+		w_gradientStorage.zeros();
+		b_gradientStorage.zeros();
 	}
 	virtual void updateGradients() {
 		w += w_gradientStorage & lr;
@@ -137,8 +130,6 @@ return next ?
 	}
 };
 #endif
-
-
 
 //depreacted code
 

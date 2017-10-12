@@ -138,7 +138,8 @@ BC_NN_tests/deprecated Tests.o : ../BC_NN_tests/deprecated Tests.cpp \
     /home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers/NeuralNetwork_Structs.h \
     /home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers/BC_NeuralNetwork_Definitions.h \
     /home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers/BLACKCAT_EXPLICIT_INSTANTIATION.h \
-    /home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers/LinearAlgebraRoutines.h \
+    /home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers/CPU.h \
+    /home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers/BLACKCAT_CPU_MATHEMATICS.h \
     /usr/include/math.h \
     /usr/include/x86_64-linux-gnu/bits/math-vector.h \
     /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
@@ -150,7 +151,8 @@ BC_NN_tests/deprecated Tests.o : ../BC_NN_tests/deprecated Tests.cpp \
     /usr/include/x86_64-linux-gnu/bits/mathdef.h \
     /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
     /usr/include/atlas/cblas.h \
-    /home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers/BC_MathematicsDeviceController.h \
+    /usr/include/c++/5/cstring \
+    /usr/include/string.h \
     /home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers/Tensor.h \
     /home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers/HelperFunctions.h \
     /usr/include/c++/5/vector \
@@ -160,6 +162,37 @@ BC_NN_tests/deprecated Tests.o : ../BC_NN_tests/deprecated Tests.cpp \
     /usr/include/c++/5/bits/stl_bvector.h \
     /usr/include/c++/5/bits/vector.tcc \
     /home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers/Scalar.h \
+    /home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers/GPU.h \
+    /home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers/BLACKCAT_GPU_MATHEMATICS.cuh \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/cuda.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/cuda_runtime.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/host_config.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/builtin_types.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/device_types.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/host_defines.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/driver_types.h \
+    /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h \
+    /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/syslimits.h \
+    /usr/include/limits.h \
+    /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
+    /usr/include/x86_64-linux-gnu/bits/local_lim.h \
+    /usr/include/linux/limits.h \
+    /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
+    /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/surface_types.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/texture_types.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/vector_types.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/library_types.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/channel_descriptor.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/cuda_runtime_api.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/cuda_device_runtime_api.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/driver_functions.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/vector_functions.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/vector_functions.hpp \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/cublas_v2.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/cublas_api.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/cuComplex.h \
+    /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/cuda_fp16.h \
     /usr/include/c++/5/fstream \
     /usr/include/c++/5/bits/codecvt.h \
     /usr/include/x86_64-linux-gnu/c++/5/bits/basic_file.h \
@@ -192,8 +225,6 @@ BC_NN_tests/deprecated Tests.o : ../BC_NN_tests/deprecated Tests.cpp \
     /usr/include/c++/5/functional \
     /usr/include/c++/5/typeinfo \
     /home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers/unq_thread.h \
-    /usr/include/c++/5/atomic \
-    /usr/include/c++/5/bits/atomic_base.h \
     /usr/include/c++/5/thread \
     /usr/include/c++/5/memory \
     /usr/include/c++/5/bits/stl_tempbuf.h \
@@ -204,6 +235,7 @@ BC_NN_tests/deprecated Tests.o : ../BC_NN_tests/deprecated Tests.cpp \
     /usr/include/c++/5/bits/shared_ptr_base.h \
     /usr/include/c++/5/bits/allocated_ptr.h \
     /usr/include/c++/5/bits/shared_ptr_atomic.h \
+    /usr/include/c++/5/bits/atomic_base.h \
     /usr/include/c++/5/backward/auto_ptr.h \
     /home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers/NeuralNetwork.h \
     /home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers/RecurrentUnit.h \

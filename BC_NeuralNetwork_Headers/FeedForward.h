@@ -3,7 +3,7 @@
 #include "Layer.h"
 #include "BC_NeuralNetwork_Definitions.h"
 
-class FeedForward: public Layer {
+class FeedForward : public Layer {
 
 	nonLinearityFunction g;
 
@@ -24,36 +24,39 @@ public:
 		w.randomize(-3, 4);
 		b.randomize(-2, 2);
 	}
-	~FeedForward() {}
+	~FeedForward() {
+	}
 	//NeuralNetwork algorithms
 	vec forwardPropagation(vec x) {
 		vec y = g(w * x + b);
+
 		bpX.store(x);
 		return next ? next->forwardPropagation(y) : y;
 	}
 	vec forwardPropagation_express(vec x) {
 		vec y = g(w * x + b);
+
 		return next ? next->forwardPropagation_express(y) : y;
 	}
 	vec backwardPropagation(vec dy) {
 		vec x = bpX.poll_last();
 
-		w_gradientStorage -=  dy * x.T(); //outer product
+		w_gradientStorage -= dy * x.T(); //outer product
 		b_gradientStorage -= dy;
 
-		return prev ? prev->backwardPropagation(   w.T() * dy & g.d(x)    ) : dy;
+		return prev ? prev->backwardPropagation(w.T() * dy & g.d(x)) : dy;
 	}
 	vec backwardPropagation_ThroughTime(vec dy) {
 		vec x = bpX.poll_last();
 
-		w_gradientStorage -=  dy * x.T(); //outer product
+		w_gradientStorage -= dy * x.T(); //outer product
 		b_gradientStorage -= dy;
-		return prev ? prev->backwardPropagation(   w.T() * dy & g.d(x)    ) : dy;
+		return prev ? prev->backwardPropagation(w.T() * dy & g.d(x)) : dy;
 	}
 	//NeuralNetwork update-methods
 	void clearBackPropagationStorage() {
-		w_gradientStorage = 0;
-		b_gradientStorage = 0;
+		w_gradientStorage.zeros();
+		b_gradientStorage.zeros();
 	}
 	void clearGradientStorage() {
 		bpX.clear();

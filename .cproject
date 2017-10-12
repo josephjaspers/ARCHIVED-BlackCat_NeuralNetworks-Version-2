@@ -45,10 +45,11 @@
 							<tool id="nvcc.linker.base.1263319357" name="NVCC Linker" superClass="nvcc.linker.base">
 								<option id="nvcc.linker.option.paths.1455263959" name="Library search path (-L)" superClass="nvcc.linker.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/lib/atlas-base"/>
-									<listOptionValue builtIn="false" value="/home/joseph/cuda-workspace/BlackCat_Tensors/Debug"/>
+									<listOptionValue builtIn="false" value="/home/joseph/cuda-workspace/BlackCat_Tensors/Release"/>
 								</option>
 								<option id="nvcc.linker.option.libs.314260742" name="Libraries (-l)" superClass="nvcc.linker.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="f77blas"/>
+									<listOptionValue builtIn="false" value="cublas"/>
 									<listOptionValue builtIn="false" value="cblas"/>
 									<listOptionValue builtIn="false" value="atlas"/>
 									<listOptionValue builtIn="false" value="BlackCat_Tensors"/>
@@ -75,7 +76,7 @@
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="com.nvidia.cuda.ide.build.project.ICudaProjectConfiguration">
-				<executable devicelink="false">
+				<executable devicelink="true">
 					<sass major="5" minor="2"/>
 					<ptx major="5" minor="2"/>
 				</executable>
@@ -127,6 +128,7 @@
 							<tool id="nvcc.linker.base.1109159442" name="NVCC Linker" superClass="nvcc.linker.base">
 								<option id="nvcc.linker.option.libs.790658639" name="Libraries (-l)" superClass="nvcc.linker.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="f77blas"/>
+									<listOptionValue builtIn="false" value="cublas"/>
 									<listOptionValue builtIn="false" value="cblas"/>
 									<listOptionValue builtIn="false" value="BlackCat_Tensors"/>
 								</option>
@@ -135,6 +137,8 @@
 									<listOptionValue builtIn="false" value="/home/joseph/cuda-workspace/BlackCat_Tensors/Release"/>
 								</option>
 								<option id="nvcc.linker.option.cudart.480316372" name="CUDA Runtime Library:" superClass="nvcc.linker.option.cudart" value="nvcc.linker.option.cudart.static" valueType="enumerated"/>
+								<option id="nvcc.linker.option.linkgl.2058939096" name="Link with OpenGL libraries" superClass="nvcc.linker.option.linkgl" value="false" valueType="boolean"/>
+								<option id="nvcc.linker.option.shared.905212547" name="Shared (-shared)" superClass="nvcc.linker.option.shared" value="false" valueType="boolean"/>
 								<inputType id="nvcc.linker.input.1154432039" superClass="nvcc.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -152,7 +156,7 @@
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="com.nvidia.cuda.ide.build.project.ICudaProjectConfiguration">
-				<executable devicelink="false">
+				<executable devicelink="true">
 					<sass major="5" minor="2"/>
 					<ptx major="5" minor="2"/>
 				</executable>

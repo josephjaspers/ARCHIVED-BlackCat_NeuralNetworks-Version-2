@@ -11,7 +11,6 @@
 class RecurrentUnit : public Layer {
 	nonLinearityFunction g;
 
-
 	vec c;
 
 	mat w;
@@ -46,14 +45,14 @@ public:
 	virtual ~RecurrentUnit() {
 
 	}
-	vec forwardPropagation(vec x)  override {
+	vec forwardPropagation(vec x) override {
 		c = g(w * x + r * c + b);
 
 		bpX.store(x);
 		bpY.store(c);
 		return next ? next->forwardPropagation(c) : c;
 	}
-	vec forwardPropagation_express( vec x) override {
+	vec forwardPropagation_express(vec x) override {
 		c = g(w * x + r * c + b);
 
 		return next ? next->forwardPropagation_express(c) : c;
@@ -62,11 +61,9 @@ public:
 		vec xt = bpX.poll_last();
 		vec yt = bpY.poll_last();
 
-
 		w_gradientStorage -= dy * xt.T();
 		b_gradientStorage -= dy;
 		r_gradientStorage -= dc * yt.T();
-
 
 		dc = dy;
 		vec dx = (w.T() * dy) & g.d(xt);
@@ -81,11 +78,9 @@ public:
 		vec xt = bpX.poll_last();
 		vec yt = bpY.poll_last();
 
-
 		w_gradientStorage -= dy * xt.T();
 		b_gradientStorage -= dy;
 		r_gradientStorage -= dc * yt.T();
-
 
 		dc += dy + (r.T() * dc) & g.d(yt);
 		vec dx = (w.T() * dy) & g.d(xt);
@@ -96,7 +91,6 @@ public:
 			return dy;
 		}
 	}
-
 
 	void clearBackPropagationStorage() {
 		bpX.clear();

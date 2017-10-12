@@ -3,6 +3,9 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
+CU_SRCS += \
+../BC_NN_tests/test.cu 
+
 CPP_SRCS += \
 ../BC_NN_tests/MNIST_test.cpp \
 ../BC_NN_tests/SnakeGame.cpp \
@@ -11,7 +14,11 @@ CPP_SRCS += \
 OBJS += \
 ./BC_NN_tests/MNIST_test.o \
 ./BC_NN_tests/SnakeGame.o \
-./BC_NN_tests/deprecated\ Tests.o 
+./BC_NN_tests/deprecated\ Tests.o \
+./BC_NN_tests/test.o 
+
+CU_DEPS += \
+./BC_NN_tests/test.d 
 
 CPP_DEPS += \
 ./BC_NN_tests/MNIST_test.d \
@@ -32,7 +39,15 @@ BC_NN_tests/deprecated\ Tests.o: ../BC_NN_tests/deprecated\ Tests.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: NVCC Compiler'
 	/usr/local/cuda-8.0/bin/nvcc -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -I/usr/include/atlas -G -g -O0 -std=c++11 -gencode arch=compute_52,code=sm_52  -odir "BC_NN_tests" -M -o "$(@:%.o=%.d)" "$<"
-	/usr/local/cuda-8.0/bin/nvcc -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -I/usr/include/atlas -G -g -O0 -std=c++11 --compile --relocatable-device-code=false -gencode arch=compute_52,code=compute_52 -gencode arch=compute_52,code=sm_52  -x cu -o  "$@" "$<"
+	/usr/local/cuda-8.0/bin/nvcc -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -I/usr/include/atlas -G -g -O0 -std=c++11 --compile --relocatable-device-code=true -gencode arch=compute_52,code=compute_52 -gencode arch=compute_52,code=sm_52  -x cu -o  "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+BC_NN_tests/%.o: ../BC_NN_tests/%.cu
+	@echo 'Building file: $<'
+	@echo 'Invoking: NVCC Compiler'
+	/usr/local/cuda-8.0/bin/nvcc -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -I/usr/include/atlas -G -g -O0 -std=c++11 -gencode arch=compute_52,code=sm_52  -odir "BC_NN_tests" -M -o "$(@:%.o=%.d)" "$<"
+	/usr/local/cuda-8.0/bin/nvcc -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -I/usr/include/atlas -G -g -O0 -std=c++11 --compile --relocatable-device-code=true -gencode arch=compute_52,code=compute_52 -gencode arch=compute_52,code=sm_52  -x cu -o  "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

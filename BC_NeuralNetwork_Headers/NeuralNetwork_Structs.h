@@ -5,27 +5,31 @@
  *      Author: joseph
  */
 
-
 #include "BC_NeuralNetwork_Definitions.h"
 
 #ifndef NONLINEARITYFUNCTION_H_
 #define NONLINEARITYFUNCTION_H_
 
+namespace nonLin {
+
+	void sigmoid(Tensor<double, CPU>& x);
+	void sigmoid_deriv(Tensor<double, CPU>& x);
+	__global__ void sig_deriv(float* data, unsigned sz);
+	__global__ void sig(float* x, unsigned sz);
+	void sigmoid(Tensor<float, GPU>& x);
+	void sigmoid_deriv(Tensor<float, GPU>& x);
+}
 
 //controls sigmoid/tanh -- will be update
 struct nonLinearityFunction {
-	nonLinearity nonLin = sigmoid;
+	///nonLinearity nonLin = sigmoid;
 public:
 	tensor operator()(tensor x) {
-		for (int i = 0 ; i < x.size(); ++i) {
-			x(i)=  1 / (1 + pow(2.71828, -x(i)));
-		}
+		nonLin::sigmoid(x);
 		return x;
 	}
 	tensor d(tensor x) {
-		for (int i = 0; i < x.size(); ++i) {
-			x(i) *= (1 - x(i));
-		}
+		nonLin::sigmoid_deriv(x);
 		return x;
 	}
 };
@@ -56,46 +60,41 @@ struct bpStorage {
 		bp_storages.clear();
 	}
 
-	const tensor& operator() (){
+	const tensor& operator()() {
 		return bp_storages.back();
 	}
 	int size() {
-		 return bp_storages.size();
+		return bp_storages.size();
 	}
 };
 
 //gradient storages -- updates weights/gradients -- assists with multithreading
 
 #include "Tensor.h"
-#include <atomic>
 struct gradientStorage {
 	std::vector<unsigned> gs_shape;
 
-	unq_thread<tensor> gStorage;
+	tensor gStorage;
 
 	void initialize(std::vector<unsigned> shape) {
 		gs_shape = shape;
 	}
 	void addGradients(const tensor& gradients) {
-		if(gStorage().isInitialized()) {
-			gStorage() -= gradients;
+		if (gStorage.isInitialized()) {
+			gStorage -= gradients;
 		} else {
-			gStorage() =  tensor(gs_shape);
-			gStorage() -= gradients;
+			gStorage = tensor(gs_shape);
+			gStorage -= gradients;
 		}
 	}
 	void updateGradients(tensor& weights, scalar& learningRate) {
-		weights += gStorage() & learningRate;
-		gStorage().fill(0);
+		weights += gStorage & learningRate;
+		gStorage.zeros();
 	}
 
 	void clear() {
-		gStorage() = 0;
+		gStorage = 0;
 	}
-	void clearCache() {
-		gStorage.clearCache();
-	}
-
 
 };
 

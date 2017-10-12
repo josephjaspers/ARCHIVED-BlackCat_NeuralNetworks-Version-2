@@ -5,23 +5,29 @@
 
 //DO NOT MODIFY
 enum Layer_Implementations { FF, RU, GRU, LSTM, CNN };
-enum nonLinearity { sigmoid, tan_h, relu };
+//enum nonLinearity { sigmoid, tan_h, relu };
 //Utilized for saving/writing NN's
 
 #include <vector>
 
-//#define GPU_Tensors
+
+//#define CUDA_GPU_ENABLED
+//--Currently not working --- in development
 #ifdef CUDA_GPU_ENABLED				//Enables Tensor Math to be run on GPU
-typedef Tensor<float> tensor;
-typedef Matrix<float> mat;
-typedef Vector<float> vec;
-typedef Scalar<float> scalar;
+typedef Tensor<float, GPU> tensor;
+typedef Matrix<float, GPU> mat;
+typedef Vector<float, GPU> vec;
+typedef std::vector<Tensor<unsigned>> max_ids;
+
+typedef float scalar;
 
 #else
 typedef Tensor<double> tensor;
 typedef Matrix<double> mat;
 typedef Vector<double> vec;
-typedef Scalar<double> scalar;
+typedef double scalar;
+typedef std::vector<Tensor<unsigned>> max_ids;
+
 
 #endif
 

@@ -56,7 +56,7 @@ public:
 	virtual ~GatedRecurrentUnit() {
 
 	}
-	vec forwardPropagation(vec a)  override {
+	vec forwardPropagation(vec a) override {
 
 		bpX.store(x);
 		bpI.store(i);
@@ -72,7 +72,7 @@ public:
 
 		return next ? next->forwardPropagation(c) : c;
 	}
-	vec forwardPropagation_express( vec x) override {
+	vec forwardPropagation_express(vec x) override {
 		i = g(wi * x + ri * c + bi);
 		f = g(wf * x + rf * c + bf);
 
@@ -87,7 +87,6 @@ public:
 		di = dc & g.d(i);
 		df = dc & yt() & g.d(f);
 
-
 		wi_gradientStorage -= di * x.T();
 		bi_gradientStorage -= di;
 		ri_gradientStorage -= di * c.T();
@@ -98,8 +97,7 @@ public:
 
 		dc &= f;
 
-
-		return prev ? prev->backwardPropagation( /*dx*/ (wi.T() * di) + (wf.T() * df) /*dx*/	) : dc;
+		return prev ? prev->backwardPropagation( /*dx*/(wi.T() * di) + (wf.T() * df) /*dx*/) : dc;
 
 	}
 	vec backwardPropagation_ThroughTime(vec dy) override {
@@ -112,10 +110,6 @@ public:
 		df = dc & yt() & g.d(f);
 		di = dc & g.d(i);
 
-
-//		(di ->* x).print();
-//		(di * x.T()).print();
-
 		wi_gradientStorage -= di * x.T();
 		bi_gradientStorage -= di;
 		ri_gradientStorage -= di * y.T();
@@ -127,25 +121,24 @@ public:
 		dc &= f;
 
 		if (prev != nullptr) {
-			vec dx = (wi.T() * di) + (wf.T() * df);// & g.d(x);
+			vec dx = (wi.T() * di) + (wf.T() * df);
 			return prev->backwardPropagation_ThroughTime(dx);
 		} else {
 			return dy;
 		}
 	}
 
-
 	void clearBackPropagationStorage() {
 		bpX.clear();
 	}
 	void clearGradientStorage() {
-		wi_gradientStorage = 0;
-		ri_gradientStorage = 0;
-		bi_gradientStorage = 0;
+		wi_gradientStorage.zeros();
+		ri_gradientStorage.zeros();
+		bi_gradientStorage.zeros();
 
-		wf_gradientStorage = 0;
-		rf_gradientStorage = 0;
-		bf_gradientStorage = 0;
+		wf_gradientStorage.zeros();
+		rf_gradientStorage.zeros();
+		bf_gradientStorage.zeros();
 	}
 	void updateGradients() {
 		wi += wi_gradientStorage & lr;

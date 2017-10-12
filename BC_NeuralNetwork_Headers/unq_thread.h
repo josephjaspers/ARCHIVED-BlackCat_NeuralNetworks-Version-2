@@ -9,9 +9,14 @@
 #define UNQ_THREAD_H_
 #include <unordered_map>
 #include <mutex>
+
+
+//This class is deprecated -- no longer attempting to utilize multi-thread cpu processing
+
 template <typename T, typename ...Types>
 class unq_thread {
 public:
+
 
 	mutable std::mutex unq_lock;
 	std::unordered_map<pthread_t, T> unq_objects;

@@ -78,7 +78,7 @@ public:
 	virtual ~Tensor<number_type, TensorOperations>();
 
 	//--------------------------------------------------------Basic Accessors--------------------------------------------------------//
-	unsigned totalMatrices()					const;
+	unsigned total_Matrices()					const;
 	bool isInitialized() 						const;
 	unsigned matrix_size() 						const;
 	unsigned size() 							const;

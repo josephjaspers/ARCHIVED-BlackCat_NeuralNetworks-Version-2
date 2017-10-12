@@ -19,7 +19,7 @@ public:
 	nonLinearityFunction g;			//sigmoid
 	nonLinearityFunction h;			//hyperbolic tangent
 
-	scalar lr = scalar(.001);			//learning rate
+	scalar lr = .01;		//learning rate
 
 	Layer* next = nullptr;			//next layer in NN
 	Layer* prev = nullptr;			//prev layer in NN
@@ -47,7 +47,7 @@ public:
 	virtual void updateGradients() = 0;
 
 	//Accessors/Mutators
-	double getLearningRate() { return lr(); }
+	double getLearningRate() { return lr; }
 	void setLearningRate(double lr) {this->lr = lr;}
 
 

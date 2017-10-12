@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lf77blas -lcblas -lBlackCat_Tensors
+LIBS := -lf77blas -lcublas -lcblas -lBlackCat_Tensors
 
