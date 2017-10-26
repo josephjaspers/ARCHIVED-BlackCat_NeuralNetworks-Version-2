@@ -3,51 +3,40 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
-CU_SRCS += \
-../BC_NN_tests/test.cu 
-
 CPP_SRCS += \
 ../BC_NN_tests/MNIST_test.cpp \
+../BC_NN_tests/Simple_QlearningTest.cpp \
 ../BC_NN_tests/SnakeGame.cpp \
+../BC_NN_tests/SnakeTrainer.cpp \
 ../BC_NN_tests/deprecated\ Tests.cpp 
 
 OBJS += \
 ./BC_NN_tests/MNIST_test.o \
+./BC_NN_tests/Simple_QlearningTest.o \
 ./BC_NN_tests/SnakeGame.o \
-./BC_NN_tests/deprecated\ Tests.o \
-./BC_NN_tests/test.o 
-
-CU_DEPS += \
-./BC_NN_tests/test.d 
+./BC_NN_tests/SnakeTrainer.o \
+./BC_NN_tests/deprecated\ Tests.o 
 
 CPP_DEPS += \
 ./BC_NN_tests/MNIST_test.d \
+./BC_NN_tests/Simple_QlearningTest.d \
 ./BC_NN_tests/SnakeGame.d \
+./BC_NN_tests/SnakeTrainer.d \
 ./BC_NN_tests/deprecated\ Tests.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
 BC_NN_tests/%.o: ../BC_NN_tests/%.cpp
 	@echo 'Building file: $<'
-	@echo 'Invoking: NVCC Compiler'
-	/usr/local/cuda-8.0/bin/nvcc -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -I/usr/include/atlas -G -g -O0 -std=c++11 -gencode arch=compute_52,code=sm_52  -odir "BC_NN_tests" -M -o "$(@:%.o=%.d)" "$<"
-	/usr/local/cuda-8.0/bin/nvcc -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -I/usr/include/atlas -G -g -O0 -std=c++11 --compile  -x c++ -o  "$@" "$<"
+	@echo 'Invoking: GCC C++ Compiler'
+	g++ -std=c++17 -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -I/usr/include/atlas -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
 BC_NN_tests/deprecated\ Tests.o: ../BC_NN_tests/deprecated\ Tests.cpp
 	@echo 'Building file: $<'
-	@echo 'Invoking: NVCC Compiler'
-	/usr/local/cuda-8.0/bin/nvcc -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -I/usr/include/atlas -G -g -O0 -std=c++11 -gencode arch=compute_52,code=sm_52  -odir "BC_NN_tests" -M -o "$(@:%.o=%.d)" "$<"
-	/usr/local/cuda-8.0/bin/nvcc -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -I/usr/include/atlas -G -g -O0 -std=c++11 --compile --relocatable-device-code=true -gencode arch=compute_52,code=compute_52 -gencode arch=compute_52,code=sm_52  -x cu -o  "$@" "$<"
-	@echo 'Finished building: $<'
-	@echo ' '
-
-BC_NN_tests/%.o: ../BC_NN_tests/%.cu
-	@echo 'Building file: $<'
-	@echo 'Invoking: NVCC Compiler'
-	/usr/local/cuda-8.0/bin/nvcc -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -I/usr/include/atlas -G -g -O0 -std=c++11 -gencode arch=compute_52,code=sm_52  -odir "BC_NN_tests" -M -o "$(@:%.o=%.d)" "$<"
-	/usr/local/cuda-8.0/bin/nvcc -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -I/usr/include/atlas -G -g -O0 -std=c++11 --compile --relocatable-device-code=true -gencode arch=compute_52,code=compute_52 -gencode arch=compute_52,code=sm_52  -x cu -o  "$@" "$<"
+	@echo 'Invoking: GCC C++ Compiler'
+	g++ -std=c++17 -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -I/usr/include/atlas -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"BC_NN_tests/deprecated Tests.d" -MT"BC_NN_tests/deprecated\ Tests.d" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

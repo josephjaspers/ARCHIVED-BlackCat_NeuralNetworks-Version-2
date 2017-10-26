@@ -53,6 +53,13 @@ public:
 			ref_first = ref_first->next;
 		}
 	}
+	void setLearningRate(double lr) {
+		Layer* ref_first = first;
+		while (ref_first != last->next) {
+			ref_first->setLearningRate(lr);
+			ref_first = ref_first->next;
+		}
+	}
 	void train(const std::vector<vec>& inputs, const std::vector<vec>& outputs, unsigned iters) {
 		while (iters > 0) {
 			train(inputs, outputs);
@@ -61,7 +68,7 @@ public:
 	}
 	void train(const std::vector<vec>& inputs, const std::vector<vec>& outputs) {
 
-		for (int i = 0; i < inputs.size(); ++i) {
+		for (unsigned i = 0; i < inputs.size(); ++i) {
 			vec hyp = forwardPropagation(inputs[i]);
 			backwardPropagation(hyp - outputs[i]);
 			update();

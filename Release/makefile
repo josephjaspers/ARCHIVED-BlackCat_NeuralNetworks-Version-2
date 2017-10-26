@@ -8,12 +8,8 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include subdir.mk
--include BC_NeuralNetwork_Headers/subdir.mk
 -include BC_NN_tests/subdir.mk
-
-OS_SUFFIX := $(subst Linux,linux,$(subst Darwin/x86_64,darwin,$(shell uname -s)/$(shell uname -m)))
-
+-include subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -29,9 +25,6 @@ endif
 ifneq ($(strip $(CXX_DEPS)),)
 -include $(CXX_DEPS)
 endif
-ifneq ($(strip $(CU_DEPS)),)
--include $(CU_DEPS)
-endif
 ifneq ($(strip $(CPP_DEPS)),)
 -include $(CPP_DEPS)
 endif
@@ -42,14 +35,6 @@ endif
 
 -include ../makefile.defs
 
-# OpenGL+GLUT OS-specific define
-ifeq ($(shell uname -s),Darwin)
-GLUT_LIBS := -Xlinker -framework -Xlinker GLUT -Xlinker -framework -Xlinker OpenGL
-else
-GLUT_LIBS := -lGL -lGLU -lglut 
-endif
-
-
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
@@ -58,14 +43,14 @@ all: BLACKCAT_NeuralNetworks
 # Tool invocations
 BLACKCAT_NeuralNetworks: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
-	@echo 'Invoking: NVCC Linker'
-	/usr/local/cuda-8.0/bin/nvcc --cudart static -L/usr/lib/atlas-base -L/home/joseph/cuda-workspace/BlackCat_Tensors/Release --relocatable-device-code=true -gencode arch=compute_52,code=compute_52 -gencode arch=compute_52,code=sm_52 -link -o  "BLACKCAT_NeuralNetworks" $(OBJS) $(USER_OBJS) $(LIBS)
+	@echo 'Invoking: GCC C++ Linker'
+	g++ -L/home/joseph/cuda-workspace/BlackCat_Tensors/Release -L/usr/lib/atlas-base -o "BLACKCAT_NeuralNetworks" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(CU_DEPS)$(CPP_DEPS)$(C_DEPS) BLACKCAT_NeuralNetworks
+	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(CPP_DEPS)$(C_DEPS) BLACKCAT_NeuralNetworks
 	-@echo ' '
 
 .PHONY: all clean dependents

@@ -67,11 +67,6 @@ namespace nonLin {
 			x.data()[i] *= (1 - x.data()[i]);
 		}
 	}
-
-	void sigmoid(Tensor<float, GPU>& x);
-	void sigmoid_deriv(Tensor<float, GPU>& x);
-
-
 };
 
 #endif /* BC_NN_FUNCTIONS_H_ */

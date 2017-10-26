@@ -14,10 +14,6 @@ namespace nonLin {
 
 	void sigmoid(Tensor<double, CPU>& x);
 	void sigmoid_deriv(Tensor<double, CPU>& x);
-	__global__ void sig_deriv(float* data, unsigned sz);
-	__global__ void sig(float* x, unsigned sz);
-	void sigmoid(Tensor<float, GPU>& x);
-	void sigmoid_deriv(Tensor<float, GPU>& x);
 }
 
 //controls sigmoid/tanh -- will be update

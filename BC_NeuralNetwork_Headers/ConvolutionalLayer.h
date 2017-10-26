@@ -47,14 +47,14 @@ public:
 		r_pos = img_rows - krnl_r + 1;
 		c_pos = img_cols - krnl_c + 1;
 
-		w = tensor(krnl_r, krnl_c, img_d, numb_krnls);
-		b = tensor(out_r, out_c, numb_krnls);
+		w = tensor({krnl_r, krnl_c, img_d, numb_krnls});
+		b = tensor({out_r, out_c, numb_krnls});
 
-		w_gradientStorage = tensor(krnl_r, krnl_c, img_d, numb_krnls);
-		b_gradientStorage = tensor(out_r, out_c, numb_krnls);
+		w_gradientStorage = tensor({krnl_r, krnl_c, img_d, numb_krnls});
+		b_gradientStorage = tensor({out_r, out_c, numb_krnls});
 
-		w.randomize(-1, 2);
-		b.randomize(-1, 2);
+		w.randomize(-5, 5);
+		b.randomize(-5, 5);
 
 		y = tensor(out_r, out_c, numb_krnls);
 		dx = tensor(img_r, img_c, img_d);
@@ -112,9 +112,27 @@ public:
 			return error;
 		}
 	}
-	virtual vec backwardPropagation_ThroughTime(vec dy) {
-		return dy;
-	}
+	virtual vec backwardPropagation_ThroughTime(vec error) {
+		tensor dy = error;
+		dy.reshape( { out_r, out_c, numb_krnls });
+		tensor x(bpX.poll_last());
+
+		b_gradientStorage -= dy;
+		for (unsigned i = 0; i < numb_krnls; ++i)
+			w_gradientStorage[i] -= x.x_corr_FilterError(2, dy[i]);
+
+		if (prev) {
+			dx.zeros();
+			//sum the error
+			for (unsigned i = 0; i < numb_krnls; ++i) {
+				dx += w[i].x_corr_SignalError(2, dy[i]);
+			}
+
+			//send it off into the world
+			return prev->backwardPropagation(vec(dx));
+		} else {
+			return error;
+		}	}
 
 	//NeuralNetwork update-methods
 	virtual void clearBackPropagationStorage() {
@@ -127,30 +145,7 @@ public:
 	virtual void updateGradients() {
 		w += w_gradientStorage & lr;
 		b += b_gradientStorage & lr; // / (output_rows * output_cols * n_filters);
+	//	w.print();
 	}
 };
 #endif
-
-//depreacted code
-
-//	-- This is the (non optimized) krnl for calculating the deltas/gradients of the current weights
-//		unsigned e_id = 0;
-//		for (unsigned f = 0; f < numb_krnls; ++f) {			//for each filter
-//			for (unsigned r = 0; r < r_pos; ++r) {	//multiply the subtensor by the value
-//				for (unsigned c = 0; c < c_pos; ++c) {
-//					w_gradientStorage[f] -= x( { 0, r, c }, { krnl_r,krnl_c, img_d }) & dy(e_id);
-//					++e_id;
-//					e_id = e_id % dy.size();
-//				}
-//			}
-//		}
-//	-- non optimized code for calculating the gradients of dx (the error of the inputs)
-//for (unsigned f = 0; f < numb_krnls; ++f) {
-//	for (unsigned r = 0; r < r_pos; ++r) {
-//		for (unsigned c = 0; c < c_pos; ++c) {
-//			dx({0, r, c}, {krnl_r, krnl_c, img_d}) -= w[f] & dy(e_id);
-//			++e_id;
-//			e_id = e_id % dy.size();
-//		}
-//	}
-//}
