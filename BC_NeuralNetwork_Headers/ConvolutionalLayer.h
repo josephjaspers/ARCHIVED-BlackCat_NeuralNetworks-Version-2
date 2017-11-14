@@ -143,8 +143,8 @@ public:
 		b_gradientStorage.zeros();
 	}
 	virtual void updateGradients() {
-		w += w_gradientStorage & lr;
-		b += b_gradientStorage & lr; // / (output_rows * output_cols * n_filters);
+		w += w_gradientStorage % lr;
+		b += b_gradientStorage % lr; // / (output_rows * output_cols * n_filters);
 	//	w.print();
 	}
 };

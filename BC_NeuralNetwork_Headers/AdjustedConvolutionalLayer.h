@@ -76,6 +76,8 @@ public:
 	}
 
 	virtual vec forwardPropagation(vec data) {
+		//std::cout << " fp " << std::endl;
+
 		tensor x = data;
 		x.reshape( { img_r, img_c, img_d });
 		y = (w.ADJUSTED_x_corr_stack(2, x));
@@ -87,7 +89,7 @@ public:
 
 	}
 	virtual vec forwardPropagation_express(vec data) {
-
+//std::cout << " fp " << std::endl;
 		tensor x = data;
 		x.reshape( { img_r, img_c, img_d });
 		y = w.ADJUSTED_x_corr_stack(2, x);
@@ -96,23 +98,18 @@ public:
 
 	}
 	virtual vec backwardPropagation(vec error) {
+		//std::cout << " backward prop adj conv" << std::endl;
 		tensor dy = error;
 		dy.reshape( { out_r, out_c, numb_krnls });
 		tensor x(bpX.poll_last());
+//std::cout << " non  lin meth " << std::endl;
+			w_gradientStorage -= nonLin::adj_convolution_filter_error(w, x, dy);
 
-		tensor adjusted_error = dy - krnl;
-
-		for (unsigned i = 0; i < numb_krnls; ++i)
-			w_gradientStorage[i] -= x.ADJUSTED_x_corr_FilterError(2, dy[i]);
-
-
-
+		//	std::cout << " prev " <<std::endl;
 		if (prev) {
 			dx.zeros();
-			//sum the error
-			for (unsigned i = 0; i < numb_krnls; ++i) {
-				dx += w[i].AdJUSTED_x_corr_SignalError(2, dy[i]);
-			}
+				dx += nonLin::adj_convolution_img_error(w,x, dy);
+
 
 			//send it off into the world
 			return prev->backwardPropagation(vec(dx));
@@ -142,8 +139,7 @@ public:
 		}
 	}
 	virtual void updateGradients() {
-		w += w_gradientStorage & lr;
-		//w.print();
+		w += w_gradientStorage % lr;
 		constrain(w);
 	}
 };

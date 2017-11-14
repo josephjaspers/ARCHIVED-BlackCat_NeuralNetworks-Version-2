@@ -54,7 +54,7 @@ int ConvMNIST() {
 	net.add(&f1);
 
 
-	net.setLearningRate(.1);  //default = .01
+	net.setLearningRate(.0001);  //default = .01
 
 	//initialize data storage
 	data inputs(0);
@@ -102,36 +102,18 @@ int ADJConvMNIST() {
 	//Create neural network object
 	NeuralNetwork net;
 
-//	AdjustedConvolutionalLayer c1(28, 28, 1, 3, 3, 32);
-//	MaxPoolingLayer p1(26, 26, 32, 2);
-//	AdjustedConvolutionalLayer c2(13, 13, 32, 2, 2, 16);
-//	MaxPoolingLayer p2(12, 12, 16, 2);
-//	AdjustedConvolutionalLayer c3(6, 6, 16, 2, 2, 10);
-//	FeedForward f1(250, 10);
-//
-//
-//
-//	net.add(&c1);
-//	net.add(&p1);
-//	net.add(&c2);
-//	net.add(&p2);
-//	net.add(&c3);
-//	net.add(&f1);
-
-
-	AdjustedConvolutionalLayer c1(28, 28, 1, 3, 3, 32);				//(img_rows, img_cols, img_depth, filt_rows, filt_cols, numb_filters)
-	MaxPoolingLayer	   p1(26, 26, 32, 2);
-	AdjustedConvolutionalLayer c2(13, 13, 32, 5, 5, 16);					//(img_rows, img_cols, img_depth, stride)
-	FeedForward 	   f1(1296, 10);							//(inputs, outputs)
+	AdjustedConvolutionalLayer c1(28, 28, 1, 3, 3, 8);				//(img_rows, img_cols, img_depth, filt_rows, filt_cols, numb_filters)
+	AdjustedConvolutionalLayer c2(26, 26, 8, 3, 3, 8);					//(img_rows, img_cols, img_depth, stride)
+	FeedForward 	   f1(4608, 10);							//(inputs, outputs)
 
 	net.add(&c1);
-	net.add(&p1);
+	//net.add(&p1);
 	net.add(&c2);
 	net.add(&f1);
 
 
 
-	net.setLearningRate(.0001);
+	net.setLearningRate(.001);
 
 	//initialize data storage
 	data inputs(0);
@@ -199,6 +181,8 @@ int percept_MNIST() {
 	generateAndLoad(inputs, outputs, in_stream, 40000);
 	//Load 1000 training exampels to be used as a test set
 	generateAndLoad(testInputs, testOutputs, in_stream, 2000);
+	std::cout << "data loaded " << std::endl;
+
 
 	std::cout << "testing initial error..." << std::endl << std::endl;
 	double test_error = 5;
@@ -225,14 +209,14 @@ int percept_MNIST() {
 
 int main() {
 
-	tensor alpha = {8,8,1};
-	alpha.randomize(-1,1);
-
-	alpha.print();
-	nonLin::max_pooling(alpha, 2).first.print();
-	auto tmp =nonLin::max_pooling(alpha, 2).first;
-	auto id = nonLin::max_pooling(alpha, 2).second;
-	nonLin::max_filling(tmp, id, 2).print();
+//	tensor alpha = {8,8,1};
+//	alpha.randomize(-1,1);
+//
+//	alpha.print();
+//	nonLin::max_pooling(alpha, 2).first.print();
+//	auto tmp =nonLin::max_pooling(alpha, 2).first;
+//	auto id = nonLin::max_pooling(alpha, 2).second;
+//	nonLin::max_filling(tmp, id, 2).print();
 
 	//percept_MNIST();
 	ConvMNIST();

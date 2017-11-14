@@ -28,15 +28,15 @@ CPP_DEPS += \
 # Each subdirectory must supply rules for building sources it contributes
 BC_NN_tests/%.o: ../BC_NN_tests/%.cpp
 	@echo 'Building file: $<'
-	@echo 'Invoking: GCC C++ Compiler'
-	g++ -std=c++17 -w -I/usr/include/atlas -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -O2 -g -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Invoking: Cygwin C++ Compiler'
+	g++ -std=c++17 -I/usr/include/atlas -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -O2 -g -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
 BC_NN_tests/deprecated\ Tests.o: ../BC_NN_tests/deprecated\ Tests.cpp
 	@echo 'Building file: $<'
-	@echo 'Invoking: GCC C++ Compiler'
-	g++ -std=c++17 -w -I/usr/include/atlas -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -O2 -g -Wall -c -fmessage-length=0 -MMD -MP -MF"BC_NN_tests/deprecated Tests.d" -MT"BC_NN_tests/deprecated\ Tests.d" -o "$@" "$<"
+	@echo 'Invoking: Cygwin C++ Compiler'
+	g++ -std=c++17 -I/usr/include/atlas -I/home/joseph/cuda-workspace/BlackCat_Tensors/BC_Headers -I/home/joseph/cuda-workspace/BLACKCAT_NeuralNetworks/BC_NeuralNetwork_Headers -O2 -g -Wall -c -fmessage-length=0 -MMD -MP -MF"BC_NN_tests/deprecated Tests.d" -MT"BC_NN_tests/deprecated\ Tests.d" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

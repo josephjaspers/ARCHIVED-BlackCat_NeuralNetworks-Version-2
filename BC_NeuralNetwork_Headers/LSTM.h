@@ -70,10 +70,10 @@ public:
 		i = g(wi * x + ri * y + bi);
 		o = g(wo * x + ro * y + bo);
 
-		c &= f;
-		c += (z & i);
+		c %= f;
+		c += (z % i);
 
-		y = g(c) & o; //g -parenthesis operator applies the nonlinearity function to a reference to the parameter, nonLin creates and returns a copy. (This preserves the original cell state)
+		y = g(c) % o; //g -parenthesis operator applies the nonlinearity function to a reference to the parameter, nonLin creates and returns a copy. (This preserves the original cell state)
 
 		//continue forwardprop
 		if (next != nullptr)
@@ -87,22 +87,22 @@ public:
 		i = g(wi * x + ri * y + bi);
 		o = g(wo * x + ro * y + bo);
 
-		c &= f;
-		c += (z & i);
+		c %= f;
+		c += (z % i);
 
-		y = (g(c) & o);
+		y = (g(c) % o);
 
 		return next != nullptr ? next->forwardPropagation(c) : c;
 	}
 	vec backwardPropagation(vec dy) override {
 		tensor& ct = bpY.last();
 
-		dc = dy & o & g.d(g(c));
-		od = dy & g(c) & g.d(o);
-		df = dc & ct & g.d(f);
-		dz = dc & i & g.d(z);
-		di = dc & z & g.d(i);
-		dc &= f;
+		dc = dy % o % g.d(g(c));
+		od = dy % g(c) % g.d(o);
+		df = dc % ct % g.d(f);
+		dz = dc % i % g.d(z);
+		di = dc % z % g.d(i);
+		dc %= f;
 		//Store gradients
 		//calculate input error
 		storeGradients();
@@ -125,11 +125,11 @@ public:
 
 		dc += dy + rz.T() * dz + ri.T() * di + rf.T() * df + ro.T() * od;
 		//math of error
-		dc += dy & g.d(y) & o & g.d(g(c));
-		od = dc & g(c) & g.d(o);
-		df = dc & ct & g.d(f);
-		dz = dc & i & g.d(z);
-		di = dc & z & g.d(i);
+		dc += dy % g.d(y) % o % g.d(g(c));
+		od = dc % g(c) % g.d(o);
+		df = dc % ct % g.d(f);
+		dz = dc % i % g.d(z);
+		di = dc % z % g.d(i);
 		//Store gradients
 		wz_gradientStorage -= dz * x;
 		bz_gradientStorage -= dz;
@@ -149,7 +149,7 @@ public:
 		//get input error
 		vec dx = (wz.T() * dz) + (wf.T() * df) + (wi.T() * di) + (wo.T() * od);
 		//send the error through the gate
-		dc &= bpF.last();
+		dc %= bpF.last();
 		//update backprop storage
 
 		if (prev != nullptr) {
@@ -176,21 +176,21 @@ public:
 
 	}
 	void updateGradients() {
-		wz += wz_gradientStorage & lr;
-		rz += rz_gradientStorage & lr;
-		bz += bz_gradientStorage & lr;
+		wz += wz_gradientStorage % lr;
+		rz += rz_gradientStorage % lr;
+		bz += bz_gradientStorage % lr;
 
-		wi += wi_gradientStorage & lr;
-		ri += ri_gradientStorage & lr;
-		bi += bi_gradientStorage & lr;
+		wi += wi_gradientStorage % lr;
+		ri += ri_gradientStorage % lr;
+		bi += bi_gradientStorage % lr;
 
-		wf += wf_gradientStorage & lr;
-		rf += rf_gradientStorage & lr;
-		bf += bf_gradientStorage & lr;
+		wf += wf_gradientStorage % lr;
+		rf += rf_gradientStorage % lr;
+		bf += bf_gradientStorage % lr;
 
-		wo += wo_gradientStorage & lr;
-		ro += ro_gradientStorage & lr;
-		bo += bo_gradientStorage & lr;
+		wo += wo_gradientStorage % lr;
+		ro += ro_gradientStorage % lr;
+		bo += bo_gradientStorage % lr;
 	}
 
 	void storeGradients() {

@@ -66,7 +66,7 @@ public:
 		r_gradientStorage -= dc * yt.T();
 
 		dc = dy;
-		vec dx = (w.T() * dy) & g.d(xt);
+		vec dx = (w.T() * dy) % g.d(xt);
 
 		if (prev) {
 			return prev->backwardPropagation(dx);
@@ -82,8 +82,8 @@ public:
 		b_gradientStorage -= dy;
 		r_gradientStorage -= dc * yt.T();
 
-		dc += dy + (r.T() * dc) & g.d(yt);
-		vec dx = (w.T() * dy) & g.d(xt);
+		dc += dy + (r.T() * dc) % g.d(yt);
+		vec dx = (w.T() * dy) % g.d(xt);
 
 		if (prev) {
 			return prev->backwardPropagation_ThroughTime(dx);
@@ -104,9 +104,9 @@ public:
 
 	}
 	void updateGradients() {
-		w += w_gradientStorage & lr;
-		r += r_gradientStorage & lr;
-		b += b_gradientStorage & lr;
+		w += w_gradientStorage % lr;
+		r += r_gradientStorage % lr;
+		b += b_gradientStorage % lr;
 	}
 };
 #endif /* RECURRENTLAYER_H_ */

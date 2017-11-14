@@ -67,7 +67,7 @@ public:
 		i = g(wi * x + ri * c + bi);
 		f = g(wf * x + rf * c + bf);
 
-		c &= f;
+		c %= f;
 		c += i;
 
 		return next ? next->forwardPropagation(c) : c;
@@ -76,7 +76,7 @@ public:
 		i = g(wi * x + ri * c + bi);
 		f = g(wf * x + rf * c + bf);
 
-		c &= f;
+		c %= f;
 		c += i;
 
 		return next ? next->forwardPropagation(c) : c;
@@ -84,8 +84,8 @@ public:
 	vec backwardPropagation(vec dy) override {
 
 		dc = dy;
-		di = dc & g.d(i);
-		df = dc & yt() & g.d(f);
+		di = dc % g.d(i);
+		df = dc % yt() % g.d(f);
 
 		wi_gradientStorage -= di * x.T();
 		bi_gradientStorage -= di;
@@ -95,7 +95,7 @@ public:
 		bf_gradientStorage -= df;
 		rf_gradientStorage -= df * c.T();
 
-		dc &= f;
+		dc %= f;
 
 		return prev ? prev->backwardPropagation( /*dx*/(wi.T() * di) + (wf.T() * df) /*dx*/) : dc;
 
@@ -107,8 +107,8 @@ public:
 		vec i = bpI.poll_last();
 
 		dc += dy + (ri.T() * di) + (rf.T() * df);
-		df = dc & yt() & g.d(f);
-		di = dc & g.d(i);
+		df = dc % yt() % g.d(f);
+		di = dc % g.d(i);
 
 		wi_gradientStorage -= di * x.T();
 		bi_gradientStorage -= di;
@@ -118,7 +118,7 @@ public:
 		bf_gradientStorage -= df;
 		rf_gradientStorage -= df * y.T();
 
-		dc &= f;
+		dc %= f;
 
 		if (prev != nullptr) {
 			vec dx = (wi.T() * di) + (wf.T() * df);
@@ -141,13 +141,13 @@ public:
 		bf_gradientStorage.zeros();
 	}
 	void updateGradients() {
-		wi += wi_gradientStorage & lr;
-		ri += ri_gradientStorage & lr;
-		bi += bi_gradientStorage & lr;
+		wi += wi_gradientStorage % lr;
+		ri += ri_gradientStorage % lr;
+		bi += bi_gradientStorage % lr;
 
-		wf += wf_gradientStorage & lr;
-		rf += rf_gradientStorage & lr;
-		bf += bf_gradientStorage & lr;
+		wf += wf_gradientStorage % lr;
+		rf += rf_gradientStorage % lr;
+		bf += bf_gradientStorage % lr;
 	}
 };
 #endif /* RECURRENTLAYER_H_ */

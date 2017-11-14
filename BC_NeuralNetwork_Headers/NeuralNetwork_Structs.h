@@ -84,7 +84,7 @@ struct gradientStorage {
 		}
 	}
 	void updateGradients(tensor& weights, scalar& learningRate) {
-		weights += gStorage & learningRate;
+		weights += gStorage % learningRate;
 		gStorage.zeros();
 	}
 

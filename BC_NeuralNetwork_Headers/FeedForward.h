@@ -44,14 +44,14 @@ public:
 		w_gradientStorage -= dy * x.T(); //outer product
 		b_gradientStorage -= dy;
 
-		return prev ? prev->backwardPropagation(w.T() * dy & g.d(x)) : dy;
+		return prev ? prev->backwardPropagation(w.T() * dy % g.d(x)) : dy;
 	}
 	vec backwardPropagation_ThroughTime(vec dy) {
 		vec x = bpX.poll_last();
 
 		w_gradientStorage -= dy * x.T(); //outer product
 		b_gradientStorage -= dy;
-		return prev ? prev->backwardPropagation(w.T() * dy & g.d(x)) : dy;
+		return prev ? prev->backwardPropagation(w.T() * dy % g.d(x)) : dy;
 	}
 	//NeuralNetwork update-methods
 	void clearBackPropagationStorage() {
@@ -62,8 +62,8 @@ public:
 		bpX.clear();
 	}
 	void updateGradients() {
-		w += w_gradientStorage & lr;
-		b += b_gradientStorage & lr;
+		w += w_gradientStorage % lr;
+		b += b_gradientStorage % lr;
 	}
 };
 
