@@ -97,60 +97,6 @@ int ConvMNIST() {
 	return 0;
 }
 
-int ADJConvMNIST() {
-
-	//Create neural network object
-	NeuralNetwork net;
-
-	AdjustedConvolutionalLayer c1(28, 28, 1, 3, 3, 8);				//(img_rows, img_cols, img_depth, filt_rows, filt_cols, numb_filters)
-	AdjustedConvolutionalLayer c2(26, 26, 8, 3, 3, 8);					//(img_rows, img_cols, img_depth, stride)
-	FeedForward 	   f1(4608, 10);							//(inputs, outputs)
-
-	net.add(&c1);
-	//net.add(&p1);
-	net.add(&c2);
-	net.add(&f1);
-
-
-
-	net.setLearningRate(.001);
-
-	//initialize data storage
-	data inputs(0);
-	data outputs(0);
-
-	data testInputs(0);
-	data testOutputs(0);
-
-	//load data
-	std::cout << "loading data..." << std::endl << std::endl;
-	std::ifstream in_stream("///home/joseph///Downloads///train.csv");
-
-	//Load 40,000 training examples (taken from kaggle digit recognizer train.csv)
-	generateAndLoad(inputs, outputs, in_stream, 40000);
-	//Load 1000 training exampels to be used as a test set
-	generateAndLoad(testInputs, testOutputs, in_stream, 1000);
-
-	//train neural network
-	unsigned NUMB_ITERATIONS = 20;
-	std::cout << "training... --- numb epochs = " << NUMB_ITERATIONS << std::endl;
-	net.realTimeTrain(inputs, outputs, NUMB_ITERATIONS, 1000); //prints out the current error in real time
-
-	//Test the error again
-	std::cout << "testing..." << std::endl << std::endl;
-	std::cout << "Test error ----" << std::endl << std::endl;
-	double test_error = 0;
-	test_error = net.test(testInputs, testOutputs);
-
-	std::cout << std::endl << "Train error ----" << std::endl;
-
-	test_error = net.test(inputs, outputs);
-
-	std::cout << " test error post training -- " << test_error << std::endl;
-
-	return 0;
-}
-
 int percept_MNIST() {
 
 	std::cout << " percept _msnist " << std::endl;
@@ -158,8 +104,8 @@ int percept_MNIST() {
 	NeuralNetwork net;
 
 	//Create layers
-	FeedForward f1(784, 256);
-	FeedForward f3(256, 10);
+	FeedForward f1(784, 250);
+	FeedForward f3(250, 10);
 
 	net.add(&f1);
 	net.add(&f3);
@@ -209,16 +155,7 @@ int percept_MNIST() {
 
 int main() {
 
-//	tensor alpha = {8,8,1};
-//	alpha.randomize(-1,1);
-//
-//	alpha.print();
-//	nonLin::max_pooling(alpha, 2).first.print();
-//	auto tmp =nonLin::max_pooling(alpha, 2).first;
-//	auto id = nonLin::max_pooling(alpha, 2).second;
-//	nonLin::max_filling(tmp, id, 2).print();
-
-	//percept_MNIST();
-	ConvMNIST();
+	percept_MNIST();
+	//ConvMNIST();
 	//ADJConvMNIST();
 }

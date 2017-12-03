@@ -44,7 +44,7 @@ all: BLACKCAT_NeuralNetworks
 BLACKCAT_NeuralNetworks: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cygwin C++ Linker'
-	g++ -L/home/joseph/cuda-workspace/BlackCat_Tensors/Release -L/usr/lib/atlas-base -o "BLACKCAT_NeuralNetworks" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -fopenmp -L/home/joseph/cuda-workspace/BlackCat_Tensors/Release -L/usr/lib/atlas-base -o "BLACKCAT_NeuralNetworks" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
